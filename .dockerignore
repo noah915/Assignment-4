@@ -1,0 +1,17 @@
+# Ignore node modules and logs to keep the image lean and use Docker cache effectively
+node_modules
+npm-debug.log
+
+# macOS metadata
+.DS_Store
+
+# Environment files (do not bake secrets into the image)
+.env
+
+# Git metadata
+.git
+
+# Optional editor and OS files
+*.swp
+*.swo
+*.tmp
