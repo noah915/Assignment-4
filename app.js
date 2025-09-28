@@ -8,9 +8,12 @@ app.use(express.static('public'));
 
 // Basic route
 app.get('/api/status', (req, res) => {
+    // Indicate whether the app is running inside a container via env var
+    const containerized = process.env.CONTAINERIZED === 'true';
     res.json({ 
         status: 'running',
-        message: 'Docker containerization successful!',
+        message: 'server running',
+        containerized,
         timestamp: new Date().toISOString(),
         port: PORT
     });
@@ -23,6 +26,6 @@ app.get('/health', (req, res) => {
 
 // Start server
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log('Application successfully containerized with Docker!');
+    const containerized = process.env.CONTAINERIZED === 'true';
+    console.log(`Server running on port ${PORT} (containerized=${containerized})`);
 });

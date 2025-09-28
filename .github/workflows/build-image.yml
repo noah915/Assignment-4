@@ -1,0 +1,33 @@
+name: Build Docker image
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU (for cross-platform builds)
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build image
+        run: |
+          docker build -t docker-demo-app:latest .
+
+      - name: Save image as artifact
+        run: |
+          mkdir -p out
+          docker save docker-demo-app:latest -o out/docker-demo-app.tar
+        
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-demo-app-image
+          path: out/docker-demo-app.tar
